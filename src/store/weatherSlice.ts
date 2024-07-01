@@ -1,11 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {Weather} from "../interfaces/Weather";
 
 interface WeatherState {
-    currentWeather: {
-        temperature: number;
-        weatherCode: number;
-        icon: string;
-    } | null;
+    currentWeather: Weather | null;
     loading: boolean;
     error: string | null;
 }
@@ -16,16 +13,20 @@ const initialState: WeatherState = {
     error: null
 };
 
+
 export const fetchWeatherData = createAsyncThunk(
     'weather/fetchWeatherData',
-    async ({ latitude, longitude }: { latitude: number; longitude: number }) => {
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`;
+    async ({latitude, longitude}: { latitude: number; longitude: number }) => {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&timezone=auto&daily=temperature_2m_max,temperature_2m_min`;
         const response = await fetch(url);
         const data = await response.json();
         return {
             temperature: data.current_weather.temperature,
-            weatherCode: data.current_weather.weathercode, // Map this to actual descriptions
-            icon: '' // Determine how to derive icon from weather code or another source
+            weatherCode: data.current_weather.weathercode,
+            time: data.current_weather.time,
+            windSpeed: data.current_weather.windspeed,
+            isDay: data.current_weather.is_day,
+            windDirection: data.current_weather.winddirection
         };
     }
 );
