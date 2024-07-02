@@ -4,7 +4,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import {City} from "../interfaces/city";
-import {fetchWeatherData} from "../store/weatherSlice";
+import {fetchWeatherData, changeSelectedCity} from "../store/weatherSlice";
 import {useAppDispatch} from "../app/hooks";
 import weatherCodes from "../interfaces/weatherCodes";
 import {Weather} from "../interfaces/Weather";
@@ -49,11 +49,12 @@ export default function CityCard() {
                 });
         });
     }, [dispatch]);
-        console.log(cities)
+
     return (
         <>
             {cities.map((city, index) => (
-                <Card key={index} sx={{display: 'flex', my: 2, alignItems: 'stretch'}}>
+                <Card key={index} sx={{display: 'flex', my: 2, alignItems: 'stretch', cursor:'pointer'}}
+                      onClick={() => dispatch(changeSelectedCity(city))}>
                     <Box sx={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
                         <CardContent sx={{flex: '1 0 auto'}}>
                             <Typography component="div" variant="h5">
@@ -67,8 +68,8 @@ export default function CityCard() {
                             {city.weather && weatherCodes[city.weather.weatherCode]?.description || 'Unknown'}
                         </Box>
                     </Box>
-                    <Box sx={{alignContent:'center', width: '100%', pr:3 }}>
-                        <Typography  component="div" variant="h5" textAlign='end'>
+                    <Box sx={{alignContent: 'center', width: '100%', pr: 3}}>
+                        <Typography component="div" variant="h5" textAlign='end'>
                             {city.weather && Math.round(city.weather.temperature)}°C
                         </Typography>
                     </Box>

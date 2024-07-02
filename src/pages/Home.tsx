@@ -5,15 +5,14 @@ import MainContent from "../components/MainContent";
 import {City} from "../interfaces/city";
 import {debounce} from "lodash";
 import {fetchCities} from "../store/citySearchSlice";
-import {fetchWeatherData} from "../store/weatherSlice";
+import {changeSelectedCity, fetchWeatherData} from "../store/weatherSlice";
 import {useAppDispatch, useAppSelector} from "../app/hooks";
 
 export default function HomePage() {
     const dispatch = useAppDispatch()
-
-    const [selectedCity, setSelectedCity] = useState<City | undefined>(undefined);
     const [inputValue, setInputValue] = useState('');
     const {cities} = useAppSelector(state => state.citySearch);
+    const {selectedCity} = useAppSelector(state => state.weather)
 
     const debouncedFetchCities = useCallback(
         debounce((searchQuery) => {
@@ -37,7 +36,7 @@ export default function HomePage() {
     }, [selectedCity, dispatch]);
 
     const handleSelectedCity = (city: City) => {
-        setSelectedCity(city);
+        dispatch(changeSelectedCity(city))
     };
     const handleInputValue = (value: string) => {
         setInputValue(value)
@@ -45,10 +44,10 @@ export default function HomePage() {
 
     return (
         <Grid container style={{minHeight: '100vh'}}>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={3}>
                 <SideBar onSelectedCity={handleSelectedCity} onInputValue={handleInputValue}/>
             </Grid>
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={9}>
                 <MainContent selectedCity={selectedCity}/>
             </Grid>
         </Grid>

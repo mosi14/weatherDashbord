@@ -1,13 +1,16 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {Weather} from "../interfaces/Weather";
+import {City} from "../interfaces/city";
 
 interface WeatherState {
+    selectedCity: City
     currentWeather: Weather | null;
     loading: boolean;
     error: string | null;
 }
 
 const initialState: WeatherState = {
+    selectedCity: {name: 'Milan', display_name: 'Milan, Lombardy, Italy', lat: 45.4641943, lon: 9.1896346},
     currentWeather: null,
     loading: false,
     error: null
@@ -34,7 +37,11 @@ export const fetchWeatherData = createAsyncThunk(
 const weatherSlice = createSlice({
     name: 'weather',
     initialState,
-    reducers: {},
+    reducers: {
+        changeSelectedCity(state, action) {
+            state.selectedCity = action.payload
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchWeatherData.pending, (state) => {
             state.loading = true;
@@ -52,3 +59,4 @@ const weatherSlice = createSlice({
 });
 
 export default weatherSlice.reducer;
+export const {changeSelectedCity} = weatherSlice.actions

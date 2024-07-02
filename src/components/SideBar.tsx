@@ -48,7 +48,6 @@ export default function SideBar({onSelectedCity, onInputValue}: SideBarProps) {
                 />
             </Box>
             <Box >
-
                 <CityCard/>
             </Box>
         </Paper>

@@ -17,21 +17,7 @@ export default function ({selectedCity}: MainContentProps) {
     if (error) return <Grid item xs={12} md={8}><Typography variant='body1'>Error: {error}</Typography></Grid>;
 
     return (
-        <Paper sx={{height: '100%', p: 2, bgcolor: '#82A8C9FF'}} >
-            <Box>
-                {/*
-                            <Select
-                                value={selectedCity.name}
-                                onChange={(e) => setSelectedCity(cities.find(city => city.name === e.target.value)!)}
-                                displayEmpty
-                            >
-                                {cities.map((city) => (
-                                    <MenuItem key={city.name} value={city.name}>
-                                        {city.name}
-                                    </MenuItem>
-                                ))}
-                            </Select>*/}
-            </Box>
+        <Paper sx={{height: '100%', p: 2, bgcolor: '#82A8C9FF'}}>
             {currentWeather && (
                 <Box mb={4}>
                     <Typography variant="h4" gutterBottom>
